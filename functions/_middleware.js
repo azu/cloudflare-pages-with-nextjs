@@ -1,8 +1,35 @@
 // based on https://github.com/1Copenut/c3-eleventy/blob/700ba500108ad85ffe161cbb9840ccfde4b2ae94/functions/_middleware.js#L58
 export const onRequest = async ({ request, next, env }) => {
-    const NONCE_TOKEN = nonceGenerator();
+    const nonce = Buffer.from(crypto.randomUUID()).toString('base64')
+    const cspHeader = `
+    default-src 'self';
+    script-src 'self' 'nonce-${nonce}' 'strict-dynamic';
+    style-src 'self' 'nonce-${nonce}';
+    img-src 'self' blob: data:;
+    font-src 'self';
+    object-src 'none';
+    base-uri 'self';
+    form-action 'self';
+    frame-ancestors 'none';
+    block-all-mixed-content;
+    upgrade-insecure-requests;
+`
+    // Replace newline characters and spaces
+    const contentSecurityPolicyHeaderValue = cspHeader
+        .replace(/\s{2,}/g, ' ')
+        .trim()
     
-    const response = await next();
+    const requestHeaders = new Headers(request.headers)
+    requestHeaders.set('x-nonce', nonce)
+    requestHeaders.set(
+        'Content-Security-Policy',
+        contentSecurityPolicyHeaderValue
+    );
+    const response = await next({
+        request: {
+            headers: requestHeaders,
+        },
+    });
     const headers = Object.fromEntries(response.headers);
     const contentType = headers["content-type"];
     
@@ -14,17 +41,13 @@ export const onRequest = async ({ request, next, env }) => {
     ) {
         response.headers.set("cf-nonce-generator", "HIT");
         response.headers.set(
-            "Content-Security-Policy",
-            `default-src 'self'; base-uri 'none'; object-src 'none'; connect-src https://sentry.io/ https://analytics.umami.is/ https://contactform.continuumdesign.net/; frame-src https://challenges.cloudflare.com; img-src 'self' data; style-src 'self'; script-src 'strict-dynamic' 'nonce-${NONCE_TOKEN}'; frame-ancestors 'none'; require-trusted-types-for 'script'; report-uri https://o1405800.ingest.sentry.io/api/6739194/security/?sentry_key=3e24862ff9ce4761ab71fce722fc4c6b;`
-        );
-        response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
-        response.headers.set("X-Frame-Options", "SAMEORIGIN");
-        response.headers.set("X-XSS-protection", "1; mode=block");
-        
+            'Content-Security-Policy',
+            contentSecurityPolicyHeaderValue
+        )
         // Find the nonce string and replace it
         const rewriter = new HTMLRewriter()
             .on("script",
-                new AttributeWriter("nonce", NONCE_TOKEN))
+                new AttributeWriter("nonce", nonce))
             .transform(response);
         
         return rewriter;
@@ -50,8 +73,4 @@ class AttributeWriter {
             this.newVal
         );
     }
-}
-
-function nonceGenerator() {
-    return btoa(crypto.getRandomValues(new Uint32Array(2)));
 }
