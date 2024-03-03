@@ -7,7 +7,8 @@ const Home = async () => {
             <h1>Home UP</h1>
             <p>Hello World! This is the Home page</p>
             <p>
-                Visit the <Link href="/about/test">About</Link> page.
+                Visit the <Link href="/about/test">test</Link> page.
+                Visit the <Link href="/about/test2">test2</Link> page.
                 {time.utc_datetime}
             </p>
         </div>
