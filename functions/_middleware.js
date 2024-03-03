@@ -11,10 +11,9 @@ export const onRequest = async ({ request, next, env }) => {
         contentType &&
         contentType.startsWith("text/html")
     ) {
-        response.headers.set("cf-nonce-generator", "HIT");
         const nonce = btoa(crypto.randomUUID());
         const cspHeader = `
-    default-src 'none';
+    default-src 'self';
     script-src 'nonce-${nonce}' 'strict-dynamic';
     style-src 'nonce-${nonce}';
     img-src 'self' blob: data:;
