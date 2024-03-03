@@ -44,7 +44,7 @@ class AttributeWriter {
         this.newVal = newVal;
     }
     
-    element(element) {
+    element = (element) => {
         element.setAttribute(
             this.attributeName,
             this.newVal
