@@ -1,3 +1,4 @@
+// based on https://github.com/1Copenut/c3-eleventy/blob/700ba500108ad85ffe161cbb9840ccfde4b2ae94/functions/_middleware.js#L58
 export const onRequest = async ({ request, next, env }) => {
     const NONCE_SECRET = env.NONCE_SECRET ?? "default-secret";
     const NONCE_TOKEN = nonceGenerator();
