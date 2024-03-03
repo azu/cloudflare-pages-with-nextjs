@@ -1,6 +1,5 @@
 // based on https://github.com/1Copenut/c3-eleventy/blob/700ba500108ad85ffe161cbb9840ccfde4b2ae94/functions/_middleware.js#L58
 export const onRequest = async ({ request, next, env }) => {
-    const NONCE_SECRET = env.NONCE_SECRET ?? "default-secret";
     const NONCE_TOKEN = nonceGenerator();
     
     const response = await next();
@@ -24,7 +23,8 @@ export const onRequest = async ({ request, next, env }) => {
         
         // Find the nonce string and replace it
         const rewriter = new HTMLRewriter()
-            .on("script", new AttributeWriter("nonce", NONCE_SECRET, NONCE_TOKEN))
+            .on("script",
+                new AttributeWriter("nonce", NONCE_TOKEN))
             .transform(response);
         
         return rewriter;
@@ -39,20 +39,16 @@ export const onRequest = async ({ request, next, env }) => {
 };
 
 class AttributeWriter {
-    constructor(attributeName, oldVal, newVal) {
+    constructor(attributeName, newVal) {
         this.attributeName = attributeName;
-        this.oldVal = oldVal;
         this.newVal = newVal;
     }
     
     element(element) {
-        const attribute = element.getAttribute(this.attributeName);
-        if (attribute) {
-            element.setAttribute(
-                this.attributeName,
-                attribute.replace(this.oldVal, this.newVal)
-            );
-        }
+        element.setAttribute(
+            this.attributeName,
+            this.newVal
+        );
     }
 }
 
