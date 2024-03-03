@@ -29,6 +29,7 @@ export const onRequest = async ({ request, next, env }) => {
         const contentSecurityPolicyHeaderValue = cspHeader
             .replace(/\s{2,}/g, ' ')
             .trim()
+        response.headers.set("cf-nonce-generator", "HIT");
         response.headers.set("Content-Security-Policy", contentSecurityPolicyHeaderValue);
         // Find the nonce string and replace it
         const rewriter = new HTMLRewriter()
