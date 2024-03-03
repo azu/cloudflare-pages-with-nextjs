@@ -59,7 +59,3 @@ class AttributeWriter {
         );
     }
 }
-
-function nonceGenerator() {
-    return btoa(crypto.getRandomValues(new Uint32Array(2)));
-}
