@@ -47,7 +47,7 @@ export const onRequest = async ({ request, next, env }) => {
         // Find the nonce string and replace it
         const rewriter = new HTMLRewriter()
             .on("script",
-                new AttributeWriter("nonce", nonce)
+                new AttributeWriter("nonce", nonce))
             .transform(response)
         
         return rewriter;
