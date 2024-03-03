@@ -1,4 +1,6 @@
+
 // based on https://github.com/1Copenut/c3-eleventy/blob/700ba500108ad85ffe161cbb9840ccfde4b2ae94/functions/_middleware.js#L58
+//
 export const onRequest = async ({ request, next, env }) => {
     const response = await next();
     const headers = Object.fromEntries(response.headers);
@@ -6,7 +8,6 @@ export const onRequest = async ({ request, next, env }) => {
     
     // 200 OK. Set CSP headers.
     if (
-        response.status === 200 &&
         contentType &&
         contentType.startsWith("text/html")
     ) {
