@@ -33,6 +33,8 @@ export const onRequest = async ({ request, next, env }) => {
         const rewriter = new HTMLRewriter()
             .on("script",
                 new AttributeWriter("nonce", nonce))
+            .on("link[rel=preload]",
+                new AttributeWriter("nonce", nonce))
             .transform(response);
         
         return rewriter;
@@ -46,6 +48,8 @@ export const onRequest = async ({ request, next, env }) => {
     return response;
 };
 
+// link rel=preload attribute writer
+// script nonce attribute writer
 class AttributeWriter {
     constructor(attributeName, newVal) {
         this.attributeName = attributeName;
