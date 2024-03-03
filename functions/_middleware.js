@@ -15,8 +15,8 @@ export const onRequest = async ({ request, next, env }) => {
         const nonce = btoa(crypto.randomUUID());
         const cspHeader = `
     default-src 'self';
-    script-src 'self' 'nonce-${nonce}' 'strict-dynamic';
-    style-src 'self' 'nonce-${nonce}';
+    script-src 'nonce-${nonce}' 'strict-dynamic';
+    style-src 'nonce-${nonce}';
     img-src 'self' blob: data:;
     font-src 'self';
     object-src 'none';
@@ -32,9 +32,7 @@ export const onRequest = async ({ request, next, env }) => {
         response.headers.set("Content-Security-Policy", contentSecurityPolicyHeaderValue);
         // Find the nonce string and replace it
         const rewriter = new HTMLRewriter()
-            .on("script",
-                new AttributeWriter("nonce", nonce))
-            .on("link[rel=preload]",
+            .on("script, style, link[rel=preload]",
                 new AttributeWriter("nonce", nonce))
             .transform(response);
         
