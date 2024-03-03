@@ -1,6 +1,6 @@
 // based on https://github.com/1Copenut/c3-eleventy/blob/700ba500108ad85ffe161cbb9840ccfde4b2ae94/functions/_middleware.js#L58
 export const onRequest = async ({ request, next, env }) => {
-    const nonce = Buffer.from(crypto.randomUUID()).toString('base64')
+    const nonce = btoa(crypto.randomUUID())
     const cspHeader = `
     default-src 'self';
     script-src 'self' 'nonce-${nonce}' 'strict-dynamic';
@@ -47,7 +47,7 @@ export const onRequest = async ({ request, next, env }) => {
         // Find the nonce string and replace it
         const rewriter = new HTMLRewriter()
             .on("script",
-                new AttributeWriter("nonce", nonce))
+                new AttributeWriter("nonce", nonce
             .transform(response);
         
         return rewriter;
