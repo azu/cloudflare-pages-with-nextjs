@@ -1,2 +1,2 @@
 # cloudflare redirect
-about/* /about/index.html 200
+/about/* /about/index.html 200
