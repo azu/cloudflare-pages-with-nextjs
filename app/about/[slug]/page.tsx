@@ -1,10 +1,10 @@
 export async function generateStaticParams() {
 
     // 1000 pages
-    const dummyPosts = Array.from({ length: 1000 }, (_, i) => ({ slug: `test${i}` }));
+    const dummyPosts = Array.from({ length: 2 }, (_, i) => ({ slug: `test${i}` }));
     return dummyPosts.map((post) => ({
         slug: post.slug,
-    }))
+    })).concat([{ slug: "index" }])
 }
 
 // Multiple versions of this page will be statically generated
