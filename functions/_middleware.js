@@ -12,10 +12,13 @@ export const onRequest = async ({ request, next, env }) => {
         contentType.startsWith("text/html")
     ) {
         const nonce = btoa(crypto.randomUUID());
+        // avoid CSP error
+        //  Refused to connect to 'https://jsonplaceholder.typicode.com/todos' because it violates the document's Content Security Policy.
         const cspHeader = `
     default-src 'self';
     script-src 'nonce-${nonce}' 'strict-dynamic';
     style-src 'nonce-${nonce}';
+    connect-src 'self' https://jsonplaceholder.typicode.com;
     style-src-elem 'self';
     img-src 'self' blob: data:;
     font-src 'self';
