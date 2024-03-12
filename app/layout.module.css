@@ -19,8 +19,9 @@ Grid
     / 120px 1fr;
 }
 
+/* モダンな色 */
 .header {
-    background-color: lime;
+    background-color: lightgreen;
     grid-area: head;
 }
 
@@ -30,11 +31,11 @@ Grid
 }
 
 .main {
-    background-color: yellow;
+    background-color: lightyellow;
     grid-area: main;
 }
 
 .footer {
-    background-color: red;
+    background-color: lightcoral;
     grid-area: foot;
 }
