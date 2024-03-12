@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Counter } from "./Counter";
 
 export async function generateStaticParams() {
     // 1000 pages
@@ -12,12 +12,10 @@ export async function generateStaticParams() {
 // using the `params` returned by `generateStaticParams`
 export default function Page({ params }: any) {
     const { slug } = params
-    const [count, setCount] = useState(0)
     return (
         <div>
             <h1>{slug}</h1>
-            <p>Count: {count}</p>
-            <button onClick={() => setCount(count + 1)}>Increment</button>
+            <Counter/>
         </div>
     )
 }
