@@ -1,5 +1,4 @@
 export async function generateStaticParams() {
-
     // 1000 pages
     const dummyPosts = Array.from({ length: 2 }, (_, i) => ({ slug: `test${i}` }));
     return dummyPosts.map((post) => ({
