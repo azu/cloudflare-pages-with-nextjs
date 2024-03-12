@@ -16,6 +16,7 @@ export const onRequest = async ({ request, next, env }) => {
     default-src 'self';
     script-src 'nonce-${nonce}' 'strict-dynamic';
     style-src 'nonce-${nonce}';
+    style-src-elem 'self';
     img-src 'self' blob: data:;
     font-src 'self';
     object-src 'none';
