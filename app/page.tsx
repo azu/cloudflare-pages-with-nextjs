@@ -18,6 +18,7 @@ const Home = async () => {
             <p>
                 Visit the <Link href="/about/test1">test1</Link> page.
                 Visit the <Link href="/about/test2">test2</Link> page.
+                Visit the <Link href="/about/dynamic_ok">Dynamic ok</Link> page.
                 <Suspense fallback={<>Loading...</>}>
                     <Time datetime={time}/>
                 </Suspense>
