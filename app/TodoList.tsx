@@ -1,7 +1,14 @@
 "use client";
 import Link from "next/link";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
+import Loading from "./loading";
+import { usePathname } from "next/dist/client/components/navigation";
 
+export const TodoListClient = () => {
+    if (typeof window === "undefined") return <Loading/>;
+    return <TodoList/>
+}
 export const TodoList = () => {
     const todos = useSuspenseQuery({
         queryKey: ["todos"],

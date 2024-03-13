@@ -1,13 +1,14 @@
+"use client";
+import React, { Suspense } from "react";
+import Loading from "./loading";
+import { TodoListClient } from "./TodoList";
 
-import { TodoList } from "./TodoList";
-import { Suspense } from "react";
-
-const Home = async () => {
+const Home = () => {
     return (
         <div>
             <h1>Home UP</h1>
-            <Suspense fallback={<div>Loading...</div>}>
-                <TodoList/>
+            <Suspense fallback={<Loading/>}>
+                <TodoListClient/>
             </Suspense>
         </div>
     );
